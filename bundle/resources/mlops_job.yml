@@ -1,0 +1,37 @@
+resources:
+  jobs:
+    lapse_mlops_pipeline:
+      name: "[${bundle.target}] Lapse MLOps Pipeline"
+
+      # Serverless jobs compute, Standard base environment, version 6.
+      # (environment_version alone = Standard base; omit base_environment.)
+      # Each notebook still %pip installs its own extra deps on top of the base.
+      environments:
+        - environment_key: default
+          spec:
+            environment_version: "6"
+
+      tasks:
+        - task_key: train
+          environment_key: default
+          notebook_task:
+            notebook_path: ../../notebooks/03_model_training.py
+
+        - task_key: register
+          environment_key: default
+          depends_on:
+            - task_key: train
+          notebook_task:
+            notebook_path: ../../notebooks/04_model_registration.py
+
+        - task_key: batch_score
+          environment_key: default
+          depends_on:
+            - task_key: register
+          notebook_task:
+            notebook_path: ../../notebooks/05_batch_inference.py
+
+      schedule:
+        quartz_cron_expression: "0 0 6 * * ?"
+        timezone_id: "America/New_York"
+        pause_status: PAUSED

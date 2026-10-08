@@ -1,0 +1,19 @@
+# OS / editor
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+
+# Local agent / tooling artifacts — not part of the workshop
+.superpowers/
+docs/superpowers/
+.claude/
+
+# Removed generator scaffolding — kept out of the public repo
+scripts/
+tests/
+pyproject.toml
+uv.lock

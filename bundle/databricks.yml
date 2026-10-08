@@ -1,0 +1,28 @@
+bundle:
+  name: ml_lifecycle_workshop
+
+variables:
+  catalog:
+    default: main
+  schema:
+    default: ml_lifecycle_workshop
+
+include:
+  - resources/*.yml
+
+# The workshop notebooks live one level up (../notebooks). Sync them with the bundle
+# so the job tasks can reference them. If `bundle validate` reports the notebooks are
+# outside the sync root on your CLI version, run the bundle from the repo root instead
+# (move databricks.yml + resources/ up one level) — see README.md.
+sync:
+  paths:
+    - ../notebooks
+
+targets:
+  dev:
+    mode: development
+    default: true
+    # No profile hardcoded. Pass `--profile <your-profile>` on the CLI, or set
+    # DATABRICKS_CONFIG_PROFILE. To pin one, add:
+    #   workspace:
+    #     profile: <your-profile>
